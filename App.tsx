@@ -11,9 +11,14 @@
 import 'react-native-gesture-handler'
 import ApplicationNavigator from '@/navigators/Application'
 import React from 'react'
+import { GlobalScreen } from '@/components'
 
 function App(): JSX.Element {
-  return <ApplicationNavigator />
+  return (
+    <GlobalScreen>
+      <ApplicationNavigator />
+    </GlobalScreen>
+  )
 }
 
 export default App
