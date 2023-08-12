@@ -11,7 +11,7 @@ const MyTheme = {
   ...DefaultTheme,
   colors: {
     ...DefaultTheme.colors,
-    background: Colors.white,
+    background: Colors.backgroundPrimary,
   },
 }
 const ApplicationNavigator = () => {

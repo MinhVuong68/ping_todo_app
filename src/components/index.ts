@@ -1,2 +1,6 @@
 export { default as GlobalScreen } from './GlobalScreen'
 export { default as Button } from './Button'
+export { default as Input } from './Input'
+export { default as Icon } from './Icon'
+export { default as LinkText } from './LinkText'
+export { default as InputPassword } from './InputPassword'

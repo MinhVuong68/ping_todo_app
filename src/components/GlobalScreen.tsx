@@ -11,19 +11,20 @@ interface GlobalScreenProps {
 const GlobalScreen: React.FC<GlobalScreenProps> = ({ children }) => {
   return (
     <View style={styles.container}>
-      <Image 
-        source={Images.shape}
-      />
-      {children}
+      <Image source={Images.shape} />
+      <View style={styles.content}>{children}</View>
     </View>
   )
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: Colors.white
-    }
+  container: {
+    flex: 1,
+    backgroundColor: Colors.backgroundPrimary,
+  },
+  content: {
+    flex: 1,
+  },
 })
 
 export default GlobalScreen

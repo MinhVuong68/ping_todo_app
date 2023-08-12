@@ -12,7 +12,11 @@ const SIntro = () => {
     <View style={styles.container}>
       <Image source={Images.intro} style={styles.image} />
       <TextIntro />
-      <Button title='Get Started' onPress={() => navigate('SLogin')} style={{marginTop: 150}}/>
+      <Button
+        title="Get Started"
+        onPress={() => navigate('SLogin')}
+        style={{ marginTop: 150 }}
+      /> 
     </View>
   )
 }
