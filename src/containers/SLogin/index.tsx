@@ -1,5 +1,5 @@
-import React from 'react'
-import { Text, View, Image, SafeAreaView, ScrollView } from 'react-native'
+import React, { useState } from 'react'
+import { Text, View, Image } from 'react-native'
 
 import styles from './styles/SLoginStyle'
 import Fonts from '@/theme/Fonts'
@@ -8,6 +8,11 @@ import { Button, Input, InputPassword, LinkText } from '@/components'
 import { navigate } from '@/navigators/utils'
 
 const SLogin = () => {
+  const [dataFormLogin, setDataFormLogin] = useState({
+    phoneNumber: '',
+    password: '',
+  })
+
   return (
     <View style={styles.container}>
       <View style={{ alignItems: 'center' }}>
@@ -15,8 +20,26 @@ const SLogin = () => {
         <Image source={Images.login} style={styles.image} />
       </View>
       <View style={styles.viewFormLogin}>
-        <Input label="Phone number" style={{ marginBottom: 10 }} />
-        <InputPassword label="Password" style={{ marginBottom: 10 }} />
+        <Input
+          label="Phone number"
+          style={{ marginBottom: 10 }}
+          onChangeValue={(text: string) =>
+            setDataFormLogin(prevState => ({
+              ...prevState,
+              phoneNumber: text,
+            }))
+          }
+        />
+        <InputPassword
+          label="Password"
+          style={{ marginBottom: 10 }}
+          onChangeValue={(text: string) =>
+            setDataFormLogin(prevState => ({
+              ...prevState,
+              password: text,
+            }))
+          }
+        />
         <LinkText link="Forgot Password?" style={{ alignSelf: 'flex-end' }} />
       </View>
       <View style={{ marginBottom: 50 }}>
