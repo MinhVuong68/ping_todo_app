@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 
 import { UserState } from './type'
 import { LoginPayLoad } from '@/services/types'
-import Api from '@/services/api'
+import Api from '@/services/Api'
 
 const api = Api.create()
 
@@ -21,19 +21,22 @@ const userSlice = createSlice({
       }
       state.profile = profile
     })
-  },
+  }
 })
 
-const login = createAsyncThunk(
+export const login = createAsyncThunk(
   'user/login',
   async (userLogin: LoginPayLoad, thunkAPI) => {
     try {
-      const res = await api.login(userLogin)
+      const res = await api.login(userLogin)  
+      //console.log(res);
       return res
     } catch (error: any) {
       return thunkAPI.rejectWithValue(error.response.data)
     }
   },
 )
+
+
 
 export default userSlice.reducer

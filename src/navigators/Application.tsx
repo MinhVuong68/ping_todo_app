@@ -4,7 +4,7 @@ import { createStackNavigator } from '@react-navigation/stack'
 
 import { SHome, SIntro, SLogin, SRegistration } from '@/containers'
 import { navigationRef } from './utils'
-import { Colors } from '@/theme'
+import { Colors, Layout } from '@/theme'
 import { SafeAreaView, StatusBar } from 'react-native'
 
 const Stack = createStackNavigator()
@@ -17,7 +17,7 @@ const MyTheme = {
 }
 const ApplicationNavigator = () => {
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView style={Layout.full}>
       <NavigationContainer ref={navigationRef} theme={MyTheme}>
         <StatusBar barStyle={'light-content'} />
         <Stack.Navigator

@@ -12,12 +12,16 @@ import 'react-native-gesture-handler'
 import ApplicationNavigator from '@/navigators/Application'
 import React from 'react'
 import { GlobalScreen } from '@/components'
+import { Provider } from 'react-redux'
+import store from '@/store'
 
 function App(): JSX.Element {
   return (
-    <GlobalScreen>
-      <ApplicationNavigator />
-    </GlobalScreen>
+    <Provider store={store}>
+      <GlobalScreen>
+        <ApplicationNavigator />
+      </GlobalScreen>
+    </Provider>
   )
 }
 

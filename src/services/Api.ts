@@ -20,7 +20,7 @@ export const setApiAccessToken = (_token: string) => {
 const tranformRequest = async (config: AxiosRequestConfig) => {
   if (accessToken) {
     // @ts-ignore
-    config.headers?.Authorization = `Bearer ${accessToken}`
+    config.headers.Authorization = `Bearer ${accessToken}`
   }
   return config
 }
@@ -38,7 +38,7 @@ const create = () => {
     timeout: apiConfig.API_TIMEOUT_MS,
     headers: apiConfig.HEADERS,
   })
-  // @ts-ignore
+  //@ts-ignore
   api.interceptors.request.use(tranformRequest)
   api.interceptors.response.use(tranformRespone, error => {
     throw error

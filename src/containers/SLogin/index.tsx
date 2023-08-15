@@ -6,13 +6,28 @@ import Fonts from '@/theme/Fonts'
 import { Images } from '@/theme'
 import { Button, Input, InputPassword, LinkText } from '@/components'
 import { navigate } from '@/navigators/utils'
+import { RootState, useAppDispatch } from '@/store'
+import { login } from '@/store/user/userReducer'
+import { useSelector } from 'react-redux'
 
 const SLogin = () => {
+
+  const dispatch = useAppDispatch()
+  
   const [dataFormLogin, setDataFormLogin] = useState({
-    phoneNumber: '',
-    password: '',
+    phoneNumber: '0899306681',
+    password: 'King0608',
   })
 
+  const onLogin = async () => {
+    try {
+      await dispatch(login(dataFormLogin)).unwrap()
+      navigate('SHome')
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  
   return (
     <View style={styles.container}>
       <View style={{ alignItems: 'center' }}>
@@ -22,7 +37,9 @@ const SLogin = () => {
       <View style={styles.viewFormLogin}>
         <Input
           label="Phone number"
+          value={dataFormLogin.phoneNumber}
           style={{ marginBottom: 10 }}
+          input={{keyboardType: 'numeric'}}
           onChangeValue={(text: string) =>
             setDataFormLogin(prevState => ({
               ...prevState,
@@ -32,6 +49,7 @@ const SLogin = () => {
         />
         <InputPassword
           label="Password"
+          value={dataFormLogin.password}
           style={{ marginBottom: 10 }}
           onChangeValue={(text: string) =>
             setDataFormLogin(prevState => ({
@@ -43,7 +61,7 @@ const SLogin = () => {
         <LinkText link="Forgot Password?" style={{ alignSelf: 'flex-end' }} />
       </View>
       <View style={{ marginBottom: 50 }}>
-        <Button title="Login" style={{ alignSelf: 'center' }} />
+        <Button title="Login" style={{ alignSelf: 'center' }} onPress={onLogin}/>
         <View style={styles.option}>
           <Text style={Fonts.textRegularBold}>Don't have an account ?</Text>
           <LinkText

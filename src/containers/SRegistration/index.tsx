@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Text, View } from 'react-native'
+import { Text, View,ScrollView } from 'react-native'
 
 import styles from './styles/SRegistrationStyle'
 import { Fonts } from '@/theme'
@@ -15,7 +15,7 @@ const SRegistration = () => {
   })
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <View style={styles.intro}>
         <Text style={Fonts.textExtraLargeBoldCenter}>Welcome Onboard!</Text>
         <Text style={Fonts.textRegularCenter}>
@@ -73,7 +73,7 @@ const SRegistration = () => {
           <LinkText link="Sign in" onPress={() => navigate('SLogin')} />
         </View>
       </View>
-    </View>
+    </ScrollView>
   )
 }
 
