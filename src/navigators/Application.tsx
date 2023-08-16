@@ -6,6 +6,7 @@ import { SHome, SIntro, SLogin, SRegistration } from '@/containers'
 import { navigationRef } from './utils'
 import { Colors, Layout } from '@/theme'
 import { SafeAreaView, StatusBar } from 'react-native'
+import { GlobalScreen } from '@/components'
 
 const Stack = createStackNavigator()
 const MyTheme = {

@@ -4,7 +4,7 @@ import { Text, View, Image } from 'react-native'
 import styles from './styles/SLoginStyle'
 import Fonts from '@/theme/Fonts'
 import { Images } from '@/theme'
-import { Button, Input, InputPassword, LinkText } from '@/components'
+import { Button, GlobalScreen, Input, InputPassword, LinkText } from '@/components'
 import { navigate } from '@/navigators/utils'
 import { RootState, useAppDispatch } from '@/store'
 import { login } from '@/store/user/userReducer'
@@ -21,7 +21,7 @@ const SLogin = () => {
 
   const onLogin = async () => {
     try {
-      await dispatch(login(dataFormLogin)).unwrap()
+      //await dispatch(login(dataFormLogin)).unwrap()
       navigate('SHome')
     } catch (error) {
       console.log(error);
@@ -29,6 +29,7 @@ const SLogin = () => {
   }
   
   return (
+    <GlobalScreen>
     <View style={styles.container}>
       <View style={{ alignItems: 'center' }}>
         <Text style={Fonts.textExtraLargeBoldCenter}>Welcome Back!</Text>
@@ -72,6 +73,7 @@ const SLogin = () => {
         </View>
       </View>
     </View>
+    </GlobalScreen>
   )
 }
 
