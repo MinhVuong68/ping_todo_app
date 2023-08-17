@@ -1,20 +1,39 @@
-import React from 'react'
-import { Text, View, Image, Pressable, StyleSheet } from 'react-native'
+import React, { useEffect, useState } from 'react'
+import { Text, View, Image, Pressable, StyleSheet, Keyboard } from 'react-native'
 import { useSelector } from 'react-redux'
 
 import { RootState } from '@/store'
-import { Colors, Fonts, Layout } from '@/theme'
+import { Fonts, Layout } from '@/theme'
 import HeaderWelcome from './components/HeaderWelcome'
 import LTask from './components/LTask'
 import { Icon } from '@/components'
+import styles from './styles/SHomeStyle'
+import { getCurrentDate } from '@/utils'
+import ModalCalenderPicker from './components/ModalCalendarPicker'
+import { useKeyboardVisibility } from '@/hooks'
 
 const SHome = () => {
   const user = useSelector((state: RootState) => state.user)
-  console.log(user)
+
+  const [date, setDate] = useState(getCurrentDate())
+  const [modalCalenderVisible, setModalCalenderVisible] = useState(false)
+  //const [keyboardIsShown,setKeyBoardIsShown] = useState(false)
+
+  const keyboardIsShown = useKeyboardVisibility()
+
   return (
     <View style={Layout.full}>
-      <HeaderWelcome />
+      {!keyboardIsShown && <HeaderWelcome />}
       <View style={styles.viewTasks}>
+        <Pressable style={styles.viewDate} onPress={()=> setModalCalenderVisible(prev => !prev)}>
+          <Text style={[Fonts.textRegular, { marginRight: 10 }]}>{date}</Text>
+          <Icon name="search1" size={20} />
+        </Pressable>
+        <ModalCalenderPicker
+          isVisible={modalCalenderVisible}
+          setVisible={setModalCalenderVisible}
+          setValue={setDate}
+        />
         <Text style={[Fonts.textExtraLargeBold, { marginBottom: 10 }]}>
           Task List
         </Text>
@@ -23,12 +42,5 @@ const SHome = () => {
     </View>
   )
 }
-
-const styles = StyleSheet.create({
-  viewTasks: {
-    marginTop: 10,
-    paddingHorizontal: 20,
-  },
-})
 
 export default SHome

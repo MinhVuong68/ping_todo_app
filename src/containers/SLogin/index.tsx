@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Text, View, Image } from 'react-native'
+import { Text, View, Image,KeyboardAvoidingView } from 'react-native'
 
 import styles from './styles/SLoginStyle'
 import Fonts from '@/theme/Fonts'
@@ -7,12 +7,15 @@ import { Images } from '@/theme'
 import { Button, GlobalScreen, Input, InputPassword, LinkText } from '@/components'
 import { navigate } from '@/navigators/utils'
 import { RootState, useAppDispatch } from '@/store'
-import { login } from '@/store/user/userReducer'
+import { login } from '@/store/user/userReducer'  
 import { useSelector } from 'react-redux'
+import { useKeyboardVisibility } from '@/hooks'
 
 const SLogin = () => {
 
   const dispatch = useAppDispatch()
+
+  const keyboardIsShown = useKeyboardVisibility()
   
   const [dataFormLogin, setDataFormLogin] = useState({
     phoneNumber: '0899306681',
@@ -31,10 +34,10 @@ const SLogin = () => {
   return (
     <GlobalScreen>
     <View style={styles.container}>
-      <View style={{ alignItems: 'center' }}>
+      {!keyboardIsShown && <View style={{ alignItems: 'center' }}>
         <Text style={Fonts.textExtraLargeBoldCenter}>Welcome Back!</Text>
         <Image source={Images.login} style={styles.image} />
-      </View>
+      </View>}
       <View style={styles.viewFormLogin}>
         <Input
           label="Phone number"
@@ -59,18 +62,18 @@ const SLogin = () => {
             }))
           }
         />
-        <LinkText link="Forgot Password?" style={{ alignSelf: 'flex-end' }} />
+        {!keyboardIsShown && <LinkText link="Forgot Password?" style={{ alignSelf: 'flex-end' }} />}
       </View>
-      <View style={{ marginBottom: 50 }}>
+      <View style={{}}>
         <Button title="Login" style={{ alignSelf: 'center' }} onPress={onLogin}/>
-        <View style={styles.option}>
+        {!keyboardIsShown && <View style={styles.option}>
           <Text style={Fonts.textRegularBold}>Don't have an account ?</Text>
           <LinkText
             link="Sign up"
             style={{ marginLeft: 8 }}
             onPress={() => navigate('SRegistration')}
           />
-        </View>
+        </View>}
       </View>
     </View>
     </GlobalScreen>

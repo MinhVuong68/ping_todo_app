@@ -20,7 +20,7 @@ const ModalEdit = ({ isVisible, setVisible }: ModalEditProps) => {
   return (
     <Modal
       isVisible={isVisible}
-      backdropOpacity={0.1}
+      backdropOpacity={0.4}
       onBackButtonPress={() => setVisible(false)}
       onBackdropPress={() => setVisible(false)}>
       <View style={styles.container}>
@@ -29,11 +29,11 @@ const ModalEdit = ({ isVisible, setVisible }: ModalEditProps) => {
         <View style={[Layout.row, { marginTop: 10 }]}>
           <TouchableOpacity style={[styles.btn, styles.btnUpdate]}>
             <Image source={Images.update} style={styles.iconBtn} />
-            <Text style={Fonts.textRegular}>Update</Text>
+            <Text style={Fonts.textRegularBold}>Update</Text>
           </TouchableOpacity>
           <TouchableOpacity style={[styles.btn, styles.btnDelete]}>
             <Image source={Images.bin} style={styles.iconBtn} />
-            <Text style={Fonts.textRegular}>Delete</Text>
+            <Text style={Fonts.textRegularBold}>Delete</Text>
           </TouchableOpacity>
         </View>
       </View>
