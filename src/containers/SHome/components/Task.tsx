@@ -10,20 +10,46 @@ import CheckBox from '@react-native-community/checkbox'
 
 import { Colors, Fonts } from '@/theme'
 import ModalEdit from './ModalEdit'
+import { isNow } from '@/utils'
+import { useAppDispatch } from '@/store'
+import { updateTaskStatus } from '@/store/user/userReducer'
 
-const Task = () => {
-  const [isSelected, setSelection] = useState(false)
-  const [modalVisible,setModalVisible] = useState(false)
+type TaskType = {
+  taskId: number
+  name: string
+  isCompleted: boolean
+  dateCreate: string
+  timeCreate: string
+}
 
-  const onChangeState = () => {
-    setModalVisible(true)
+const Task = ({
+  taskId,
+  name,
+  isCompleted,
+  dateCreate,
+  timeCreate,
+}: TaskType) => {
+  const dispatch = useAppDispatch()
+  const [isSelected, setSelection] = useState(isCompleted)
+  const [modalVisible, setModalVisible] = useState(false)
+
+  const onPressTask = () => {
+    if (!isNow(dateCreate)) return
+    setModalVisible(prev => !prev)
   }
+
+  const onChangeState = async () => {
+    await dispatch(updateTaskStatus(taskId)).unwrap()
+    setSelection(prev => !prev)
+  }
+
   return (
     <>
-      <TouchableOpacity style={styles.container} onPress={onChangeState}>
+      <TouchableOpacity style={styles.container} onPress={onPressTask}>
         <CheckBox
+          disabled={!isNow(dateCreate)}
           value={isSelected}
-          onValueChange={setSelection}
+          onValueChange={onChangeState}
           tintColors={{ true: Colors.primary, false: '#000' }}
         />
         <View style={styles.task}>
@@ -32,15 +58,12 @@ const Task = () => {
               Fonts.textRegular,
               isSelected && { textDecorationLine: 'line-through' },
             ]}>
-            Play game
+            {name}
           </Text>
-          <Text>10:06:32</Text>
+          <Text>{timeCreate}</Text>
         </View>
       </TouchableOpacity>
-      <ModalEdit
-        isVisible={modalVisible}
-        setVisible={setModalVisible}
-      />
+      <ModalEdit isVisible={modalVisible} setVisible={setModalVisible} />
     </>
   )
 }

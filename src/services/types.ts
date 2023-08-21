@@ -8,3 +8,8 @@ export type RegisterPayload = {
     phoneNumber: string,
     password: string
 }
+
+export type GetTasksPayload = {
+  userId: number,
+  date: string,
+}

@@ -1,8 +1,9 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
 
 import apiConfig from '@/configs/apiConfig'
-import { LoginPayLoad, RegisterPayload } from './types'
+import { GetTasksPayload, LoginPayLoad, RegisterPayload } from './types'
 import { UserState } from '@/store/user/type'
+import { navigateAndSimpleReset } from '@/navigators/utils'
 
 const serialize = (params: { [x: string]: any }) => {
   let result = ''
@@ -13,11 +14,14 @@ const serialize = (params: { [x: string]: any }) => {
 }
 
 let accessToken: string = ''
+
 export const setApiAccessToken = (_token: string) => {
   accessToken = _token
 }
 
 const tranformRequest = async (config: AxiosRequestConfig) => {
+  console.log(accessToken)
+
   if (accessToken) {
     // @ts-ignore
     config.headers.Authorization = `Bearer ${accessToken}`
@@ -40,7 +44,7 @@ const create = () => {
   })
   //@ts-ignore
   api.interceptors.request.use(tranformRequest)
-  api.interceptors.response.use(tranformRespone, error => {
+  api.interceptors.response.use(tranformRespone, (error: any) => {
     throw error
   })
 
@@ -48,10 +52,15 @@ const create = () => {
     api.post('/api/v1/auth/register', payload)
   const login = (payload: LoginPayLoad) =>
     api.post('/api/v1/auth/authenticate', payload)
-
+  const getTasks = (payload: GetTasksPayload) =>
+    api.get(`api/v1/task${serialize(payload)}`)
+  const updateTaskStatus = (taskId: number) =>
+    api.put(`api/v1/task/${taskId}/status`)
   return {
     login,
     register,
+    getTasks,
+    updateTaskStatus,
   }
 }
 

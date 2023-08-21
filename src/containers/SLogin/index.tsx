@@ -24,7 +24,7 @@ const SLogin = () => {
 
   const onLogin = async () => {
     try {
-      //await dispatch(login(dataFormLogin)).unwrap()
+      await dispatch(login(dataFormLogin)).unwrap()
       navigate('SHome')
     } catch (error) {
       console.log(error);

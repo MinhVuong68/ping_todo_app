@@ -5,6 +5,7 @@ import Modal from 'react-native-modal'
 import moment from 'moment'
 
 import { Colors } from '@/theme'
+import { isNow } from '@/utils'
 
 interface ModalCalenderPickerProps {
   isVisible: boolean
@@ -22,6 +23,7 @@ const ModalCalenderPicker = ({
     setValue(moment(date).format('DD/MM/YYYY'))
   }
 
+  
   return (
     <Modal
       isVisible={isVisible}

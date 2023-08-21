@@ -8,32 +8,14 @@ import {
   TouchableOpacity,
 } from 'react-native'
 
-import { Colors } from '@/theme'
+import { Colors, Images } from '@/theme'
 import { Icon } from '@/components'
 import Task from './Task'
 import Input from './Input'
+import { isNow } from '@/utils'
+import EmptyView from '@/components/Emptyview'
 
-type ItemData = {
-  id: string
-  title: string
-}
-
-const DATA: ItemData[] = [
-  {
-    id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-    title: 'First Item',
-  },
-  {
-    id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-    title: 'Second Item',
-  },
-  {
-    id: '58694a0f-3da1-471f-bd96-145571e29d72',
-    title: 'Third Item',
-  },
-]
-
-const LTask = () => {
+const LTask = ({ tasks, date }: any) => {
   const [isPressBtnAdd, setIsPressBtnAdd] = useState(false)
 
   const onCancel = () => {
@@ -41,7 +23,7 @@ const LTask = () => {
   }
   return (
     <View style={styles.container}>
-      {isPressBtnAdd ? (
+      {isNow(date) && isPressBtnAdd ? (
         <View style={{ flexDirection: 'row', alignSelf: 'flex-end' }}>
           <TouchableOpacity style={styles.btnAdd}>
             <Icon
@@ -67,13 +49,25 @@ const LTask = () => {
           <Icon name="pluscircleo" color={Colors.primary} size={30} />
         </Pressable>
       )}
-      {isPressBtnAdd && <Input />}
-      <FlatList
-        data={DATA}
-        renderItem={({ item }: any) => <Task />}
-        keyExtractor={item => item.id}
-        //extraData={selectedId}
-      />
+      {isNow(date) && isPressBtnAdd && <Input />}
+      {tasks.length ? (
+        <FlatList
+          data={tasks}
+          renderItem={({ item }: any) => (
+            <Task
+              taskId={item.id}
+              name={item.name}
+              isCompleted={item.completed}
+              dateCreate={item.dateCreate}
+              timeCreate={item.timeCreate}
+            />
+          )}
+          keyExtractor={item => item.id}
+          //extraData={selectedId}
+        />
+      ) : (
+        <EmptyView image={Images.sticky_note} title="" />
+      )}
     </View>
   )
 }
