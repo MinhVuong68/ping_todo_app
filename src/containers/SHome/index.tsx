@@ -1,12 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import {
-  Text,
-  View,
-  Image,
-  Pressable,
-  StyleSheet,
-  Keyboard,
-} from 'react-native'
+import { Text, View, Pressable } from 'react-native'
 import { useSelector } from 'react-redux'
 
 import { RootState, useAppDispatch } from '@/store'
@@ -15,11 +8,10 @@ import HeaderWelcome from './components/HeaderWelcome'
 import LTask from './components/LTask'
 import { Icon } from '@/components'
 import styles from './styles/SHomeStyle'
-import { getCurrentDate, isNow } from '@/utils'
+import { getCurrentDate } from '@/utils'
 import ModalCalenderPicker from './components/ModalCalendarPicker'
 import { useKeyboardVisibility } from '@/hooks'
-import { getTasks } from '@/store/user/userReducer'
-import { setApiAccessToken } from '@/services/Api'
+import { getTasks } from '@/store/task/taskReducer'
 
 const SHome = () => {
   const dispatch = useAppDispatch()
@@ -27,7 +19,6 @@ const SHome = () => {
 
   const [date, setDate] = useState(getCurrentDate())
   const [modalCalenderVisible, setModalCalenderVisible] = useState(false)
-  const [tasks,setTasks] = useState([])
 
   const keyboardIsShown = useKeyboardVisibility()
 
@@ -37,9 +28,7 @@ const SHome = () => {
         userId: user.profile.id,
         date: date,
       }),
-    )
-      .unwrap()
-      .then((data:any) => setTasks(data))
+    ).unwrap()
   }, [date])
 
   return (
@@ -60,7 +49,7 @@ const SHome = () => {
         <Text style={[Fonts.textExtraLargeBold, { marginBottom: 10 }]}>
           Task List
         </Text>
-        <LTask tasks={tasks} date={date}/>
+        <LTask date={date} />
       </View>
     </View>
   )

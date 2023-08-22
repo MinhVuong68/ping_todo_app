@@ -14,18 +14,49 @@ import Task from './Task'
 import Input from './Input'
 import { isNow } from '@/utils'
 import EmptyView from '@/components/Emptyview'
+import { useSelector } from 'react-redux'
+import { RootState, useAppDispatch } from '@/store'
+import { createTask } from '@/store/task/taskReducer'
 
-const LTask = ({ tasks, date }: any) => {
+const LTask = ({ date }: any) => {
+  const dispatch = useAppDispatch()
+
+  const user = useSelector((state: RootState) => state.user.profile)
+  const tasks = useSelector((state: RootState) => state.task.tasks)
+
   const [isPressBtnAdd, setIsPressBtnAdd] = useState(false)
+  const [taskName, setTaskName] = useState('')
+
+  const onCreate = async () => {
+    try {
+      const rs: any = await dispatch(
+        createTask({ name: taskName, userId: user.id }),
+      ).unwrap()
+      // setTaskList((prev: any) => [
+      //   ...prev,
+      //   {
+      //     taskId: rs.id,
+      //     name: rs.name,
+      //     isCompleted: rs.completed,
+      //     dateCreate: rs.dateCreate,
+      //     timeCreate: rs.timeCreate,
+      //   },
+      // ])
+      setIsPressBtnAdd(prev => !prev)
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   const onCancel = () => {
     setIsPressBtnAdd(prev => !prev)
+    setTaskName('')
   }
   return (
     <View style={styles.container}>
       {isNow(date) && isPressBtnAdd ? (
         <View style={{ flexDirection: 'row', alignSelf: 'flex-end' }}>
-          <TouchableOpacity style={styles.btnAdd}>
+          <TouchableOpacity style={styles.btnAdd} onPress={onCreate}>
             <Icon
               type="MaterialIcons"
               name="check-circle"
@@ -49,7 +80,7 @@ const LTask = ({ tasks, date }: any) => {
           <Icon name="pluscircleo" color={Colors.primary} size={30} />
         </Pressable>
       )}
-      {isNow(date) && isPressBtnAdd && <Input />}
+      {isNow(date) && isPressBtnAdd && <Input onChangeValue={setTaskName} />}
       {tasks.length ? (
         <FlatList
           data={tasks}
@@ -62,7 +93,7 @@ const LTask = ({ tasks, date }: any) => {
               timeCreate={item.timeCreate}
             />
           )}
-          keyExtractor={item => item.id}
+          //keyExtractor={item => item.id}
           //extraData={selectedId}
         />
       ) : (

@@ -11,10 +11,11 @@ import CheckBox from '@react-native-community/checkbox'
 import { Colors, Fonts } from '@/theme'
 import ModalEdit from './ModalEdit'
 import { isNow } from '@/utils'
-import { useAppDispatch } from '@/store'
-import { updateTaskStatus } from '@/store/user/userReducer'
+import { RootState, useAppDispatch } from '@/store'
+import { updateTaskStatus } from '@/store/task/taskReducer'
+import { useSelector } from 'react-redux'
 
-type TaskType = {
+export type TaskType = {
   taskId: number
   name: string
   isCompleted: boolean
@@ -32,6 +33,8 @@ const Task = ({
   const dispatch = useAppDispatch()
   const [isSelected, setSelection] = useState(isCompleted)
   const [modalVisible, setModalVisible] = useState(false)
+
+  console.log(name)
 
   const onPressTask = () => {
     if (!isNow(dateCreate)) return
@@ -63,7 +66,11 @@ const Task = ({
           <Text>{timeCreate}</Text>
         </View>
       </TouchableOpacity>
-      <ModalEdit isVisible={modalVisible} setVisible={setModalVisible} />
+      <ModalEdit
+        isVisible={modalVisible}
+        setVisible={setModalVisible}
+        value={{ taskName: name, taskId: taskId }}
+      />
     </>
   )
 }

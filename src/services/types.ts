@@ -13,3 +13,8 @@ export type GetTasksPayload = {
   userId: number,
   date: string,
 }
+
+export type TaskItem = {
+  name: string,
+  userId: number
+}

@@ -1,9 +1,12 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
 
 import apiConfig from '@/configs/apiConfig'
-import { GetTasksPayload, LoginPayLoad, RegisterPayload } from './types'
-import { UserState } from '@/store/user/type'
-import { navigateAndSimpleReset } from '@/navigators/utils'
+import {
+  GetTasksPayload,
+  LoginPayLoad,
+  RegisterPayload,
+  TaskItem,
+} from './types'
 
 const serialize = (params: { [x: string]: any }) => {
   let result = ''
@@ -54,13 +57,20 @@ const create = () => {
     api.post('/api/v1/auth/authenticate', payload)
   const getTasks = (payload: GetTasksPayload) =>
     api.get(`api/v1/task${serialize(payload)}`)
+  const createTask = (payload: TaskItem) => api.post('api/v1/task', payload)
   const updateTaskStatus = (taskId: number) =>
     api.put(`api/v1/task/${taskId}/status`)
+  const updateTaskName = (payload: any) =>
+    api.put(`api/v1/task/${payload.taskId}/name`, payload.taskName)
+  const deleteTask = (taskId: number) => api.delete(`api/v1/task/${taskId}`)
   return {
     login,
     register,
     getTasks,
     updateTaskStatus,
+    updateTaskName,
+    createTask,
+    deleteTask,
   }
 }
 

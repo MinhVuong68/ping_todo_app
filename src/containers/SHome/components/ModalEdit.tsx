@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import {
   View,
   Text,
@@ -10,13 +10,38 @@ import {
 import Modal from 'react-native-modal'
 
 import { Colors, Fonts, Images, Layout } from '@/theme'
+import { useAppDispatch } from '@/store'
+import { deleteTask, updateTaskName } from '@/store/task/taskReducer'
 
 interface ModalEditProps {
   isVisible: boolean
   setVisible: (b: boolean) => any
+  value?: any
 }
 
-const ModalEdit = ({ isVisible, setVisible }: ModalEditProps) => {
+const ModalEdit = ({ isVisible, setVisible, value }: ModalEditProps) => {
+  const dispatch = useAppDispatch()
+
+  const [inputs, setInputs] = useState({
+    taskName: value?.taskName,
+  })
+  const onUpdate = async () => {
+    try {
+      await dispatch(
+        updateTaskName({ taskId: value?.taskId, taskName: inputs.taskName }),
+      ).unwrap()
+      setVisible(false)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const onDelete = async () => {
+    try {
+      await dispatch(deleteTask(value.taskId)).unwrap()
+    } catch (error) {}
+  }
+
   return (
     <Modal
       isVisible={isVisible}
@@ -25,13 +50,23 @@ const ModalEdit = ({ isVisible, setVisible }: ModalEditProps) => {
       onBackdropPress={() => setVisible(false)}>
       <View style={styles.container}>
         <Image source={Images.light_bulb} />
-        <TextInput style={styles.input} value="play game" />
+        <TextInput
+          style={styles.input}
+          value={inputs.taskName}
+          onChangeText={(text: string) =>
+            setInputs(prev => ({ ...prev, taskName: text }))
+          }
+        />
         <View style={[Layout.row, { marginTop: 10 }]}>
-          <TouchableOpacity style={[styles.btn, styles.btnUpdate]}>
+          <TouchableOpacity
+            style={[styles.btn, styles.btnUpdate]}
+            onPress={onUpdate}>
             <Image source={Images.update} style={styles.iconBtn} />
             <Text style={Fonts.textRegularBold}>Update</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={[styles.btn, styles.btnDelete]}>
+          <TouchableOpacity
+            style={[styles.btn, styles.btnDelete]}
+            onPress={onDelete}>
             <Image source={Images.bin} style={styles.iconBtn} />
             <Text style={Fonts.textRegularBold}>Delete</Text>
           </TouchableOpacity>
