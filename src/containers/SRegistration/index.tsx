@@ -11,14 +11,25 @@ import {
   LinkText,
 } from '@/components'
 import { navigate } from '@/navigators/utils'
+import { useAppDispatch } from '@/store'
+import { register } from '@/store/user/userReducer'
 
 const SRegistration = () => {
+  const dispatch = useAppDispatch()
   const [dataFormRegister, setDataFormRegister] = useState({
     name: '',
     phoneNumber: '',
     password: '',
-    rePassword: '',
   })
+
+  const onRegister = async () => {
+    try {
+      await dispatch(
+        register({ ...dataFormRegister, avatar: 'k.png' }),
+      ).unwrap()
+      navigate('SHome')
+    } catch (error) {}
+  }
 
   return (
     <GlobalScreen>
@@ -36,7 +47,7 @@ const SRegistration = () => {
             onChangeValue={(text: string) =>
               setDataFormRegister(prevState => ({
                 ...prevState,
-                text,
+                name: text,
               }))
             }
           />
@@ -47,7 +58,7 @@ const SRegistration = () => {
             onChangeValue={(text: string) =>
               setDataFormRegister(prevState => ({
                 ...prevState,
-                text,
+                phoneNumber: text,
               }))
             }
           />
@@ -57,24 +68,18 @@ const SRegistration = () => {
             onChangeValue={(text: string) =>
               setDataFormRegister(prevState => ({
                 ...prevState,
-                text,
-              }))
-            }
-          />
-          <InputPassword
-            label="Confirm Password"
-            style={{ marginBottom: 10 }}
-            onChangeValue={(text: string) =>
-              setDataFormRegister(prevState => ({
-                ...prevState,
-                text,
+                password: text,
               }))
             }
           />
         </View>
 
         <View style={{ marginBottom: 50 }}>
-          <Button title="Register" style={{ alignSelf: 'center' }} />
+          <Button
+            title="Register"
+            style={{ alignSelf: 'center' }}
+            onPress={onRegister}
+          />
           <View style={styles.option}>
             <Text style={Fonts.textRegularBold}>
               Already have an account ?{' '}

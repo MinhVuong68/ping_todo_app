@@ -5,6 +5,7 @@ export type LoginPayLoad = {
 
 export type RegisterPayload = {
     name: string,
+    avatar: string,
     phoneNumber: string,
     password: string
 }

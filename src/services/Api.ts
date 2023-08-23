@@ -7,6 +7,13 @@ import {
   RegisterPayload,
   TaskItem,
 } from './types'
+import { navigateAndSimpleReset } from '@/navigators/utils'
+import { showToast } from '@/store/app/appReducer'
+
+let store: any
+export const injectStore = (_store: any) => {
+  store = _store
+}
 
 const serialize = (params: { [x: string]: any }) => {
   let result = ''
@@ -23,8 +30,7 @@ export const setApiAccessToken = (_token: string) => {
 }
 
 const tranformRequest = async (config: AxiosRequestConfig) => {
-  console.log(accessToken)
-
+ 
   if (accessToken) {
     // @ts-ignore
     config.headers.Authorization = `Bearer ${accessToken}`
@@ -48,12 +54,20 @@ const create = () => {
   //@ts-ignore
   api.interceptors.request.use(tranformRequest)
   api.interceptors.response.use(tranformRespone, (error: any) => {
+    if (error.response.data) {
+      store?.dispatch(showToast({ message: error.response.data }))
+    }
+    switch (error.response.status) {
+      case 403: {
+        navigateAndSimpleReset('SLogin')
+      }
+    }
     throw error
   })
 
-  const register = (payload: RegisterPayload) =>
+  const register = (payload: RegisterPayload):any =>
     api.post('/api/v1/auth/register', payload)
-  const login = (payload: LoginPayLoad) =>
+  const login = (payload: LoginPayLoad): any =>
     api.post('/api/v1/auth/authenticate', payload)
   const getTasks = (payload: GetTasksPayload) =>
     api.get(`api/v1/task${serialize(payload)}`)
